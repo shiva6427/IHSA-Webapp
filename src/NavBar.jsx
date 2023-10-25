@@ -35,7 +35,7 @@ const NavBar = () => {
             </li>
             
             <li>
-              <Link to="/randomize" style={linkStyle}>
+              <Link to="/" style={linkStyle}>
                 <BiShuffle style={iconStyle} /> Randomize
               </Link>
             </li>

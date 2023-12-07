@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Table, Input, Button, Select, Row, Col, Layout } from 'antd';
 import * as XLSX from 'xlsx';
 import NavBar from './NavBar';
-import '../stylings/ManageRidersPage.css';
+import './ManageRidersPage.css';
 
 const { Option } = Select;
 const { Content } = Layout;

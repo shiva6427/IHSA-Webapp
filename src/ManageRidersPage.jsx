@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import { Table, Input, Button, Select, Row, Col, Layout } from 'antd';
 import * as XLSX from 'xlsx';
 import NavBar from './NavBar';
-import './ManageRidersPage.css';
+import '../stylings/ManageRidersPage.css';
 
 const { Option } = Select;
 const { Content } = Layout;
 
-const ManageRidersPage = () => {
+const ManageRidersPage = ({ userRole, handleLogout }) => {
   const [showClassInput, setShowClassInput] = useState(''); // State to input Show Classes
   const [classInput, setClassInput] = useState(''); // State to select Show Classes
   const [riderNameInput, setRiderNameInput] = useState('');
   const [schoolInput, setSchoolInput] = useState('');
   const [overweightInput, setOverweightInput] = useState('');
+  const [overheightInput, setOverheightInput] = useState('');
   const [tableData, setTableData] = useState([]);
   const [pasteData, setPasteData] = useState('');
   const [idInput, setIdInput] = useState('');
@@ -48,6 +49,7 @@ const ManageRidersPage = () => {
           RiderName: riderNameInput,
           School: schoolInput,
           OverWeight: overweightInput,
+          OverHeight: overheightInput,
         },
       ]);
       setClassInput('');
@@ -55,6 +57,7 @@ const ManageRidersPage = () => {
       setRiderNameInput('');
       setSchoolInput('');
       setOverweightInput('F');
+      setOverheightInput('F');
     }
   };
 
@@ -73,6 +76,7 @@ const ManageRidersPage = () => {
             RiderName: editedValues.RiderName,
             School: editedValues.School,
             OverWeight: editedValues.OverWeight,
+            OverHeight: editedValues.OverHeight,
           }
         : item
     );
@@ -93,9 +97,10 @@ const ManageRidersPage = () => {
       "Rider Name": item.RiderName,
       School: item.School,
       OverWeight: item.OverWeight,
+      OverHeight: item.OverHeight,
     }));
 
-    const header = ["Class", "ID", "Rider Name", "School", "OverWeight"];
+    const header = ["Class", "ID", "Rider Name", "School", "OverWeight", "OverHeight"];
     const worksheet = XLSX.utils.json_to_sheet(modifiedData, { header });
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, worksheet, 'RidersData');
@@ -126,6 +131,7 @@ const ManageRidersPage = () => {
             RiderName: riderName,
             School: school,
             OverWeight: 'F',
+            OverHeight: 'F',
           });
         }
       }
@@ -211,6 +217,23 @@ const ManageRidersPage = () => {
         ),
     },
     {
+      title: 'OverHeight',
+      dataIndex: 'OverHeight',
+      render: (_, record) =>
+        editingRow === record ? (
+          <Select
+            style={{ width: '100%' }}
+            value={editedValues.OverHeight}
+            onChange={(value) => setEditedValues({ ...editedValues, OverHeight: value })}
+          >
+            <Option value="T">T</Option>
+            <Option value="F">F</Option>
+          </Select>
+        ) : (
+          record.OverHeight
+        ),
+    },
+    {
       title: 'Action',
       dataIndex: 'Action',
       render: (_, record) => {
@@ -238,7 +261,7 @@ const ManageRidersPage = () => {
 
   return (
     <Layout className="manage-riders-layout">
-      <NavBar />
+      <NavBar userRole={userRole} handleLogout={handleLogout} />
       <Content>
         <div className="manage-riders-content">
           <h1>Manage Riders</h1>
@@ -272,29 +295,38 @@ const ManageRidersPage = () => {
                 </Select>
               )}
             </Col>
-            <Col span={3}>
-              <Input placeholder="ID" value={idInput} onChange={(e) => setIdInput(e.target.value)} />
+            <Col span={1}>
+              <Input placeholder="ID" style={{ width: '100%' }} value={idInput} onChange={(e) => setIdInput(e.target.value)} />
             </Col>
-            <Col span={3}>
+            <Col span={4}>
               <Input
                 placeholder="Rider First and Last Name"
                 value={riderNameInput}
                 onChange={(e) => setRiderNameInput(e.target.value)}
               />
             </Col>
-            <Col span={3}>
+            <Col span={4}>
               <Input placeholder="School Name" value={schoolInput} onChange={(e) => setSchoolInput(e.target.value)} />
             </Col>
-            <Col span={3}>
-              <Select style={{ width: '100%' }} value={overweightInput} onChange={(value) => setOverweightInput(value)}>
-              <Option value="instruction" disabled>
+            <Col span={2}>
+              <Select style={{ width: '105%' }} value={overweightInput} onChange={(value) => setOverweightInput(value)}>
+                <Option value="instruction" disabled>
                   OverWeight
                 </Option>
                 <Option value="T">T</Option>
                 <Option value="F">F</Option>
               </Select>
             </Col>
-            <Col span={2}>
+            <Col span={2} >
+              <Select style={{ width: '100%' }} value={overheightInput} onChange={(value) => setOverheightInput(value)}>
+                <Option value="instruction" disabled>
+                  OverHeight
+                </Option>
+                <Option value="T">T</Option>
+                <Option value="F">F</Option>
+              </Select>
+            </Col>
+            <Col span={1}>
               <Button type="primary" onClick={handleAdd}>
                 Add
               </Button>

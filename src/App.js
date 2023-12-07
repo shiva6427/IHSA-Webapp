@@ -5,6 +5,7 @@ import ManageHorsesPage from './ManageHorsesPage';
 import ManageRidersPage from './ManageRidersPage';
 import NavBar from './NavBar';
 import './App.css';
+import RandomizedResultsPage from './RandomizedResultsPage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/manage-horses" element={<ManageHorsesPage />} />
           <Route path="/manage-riders" element={<ManageRidersPage />} />
           <Route path="/" element={<RandomizePage />} />
+          <Route path="/results" element={<RandomizedResultsPage  />} />
         </Routes>
       </div>
     </Router>
